@@ -7,13 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Storage\" />
+      <ProjectReference Include="..\MapLib\MapLib.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MapLib.Core\MapLib.Core.csproj" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
+      <PackageReference Include="xunit" Version="2.9.3" />
     </ItemGroup>
-
-
 
 </Project>

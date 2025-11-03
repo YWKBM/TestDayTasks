@@ -1,0 +1,38 @@
+using MapLib.Core.Interfaces;
+using MapLib.Core.Models;
+
+namespace MapLib.Services;
+
+public class MapService : IMapService
+{
+    private Map map = new();
+
+    public Tile GetTile(int x, int y)
+    {
+        ValidateCoordinates(x, y);
+        return map.Tile(x, y);
+    }
+
+    public TileType GetTileType(int x, int y)
+    {
+        ValidateCoordinates(x, y);
+        return map.Tile(x, y).Type;
+    }
+
+    public int GetTerritoryId(int x, int y)
+    { 
+        ValidateCoordinates(x, y);
+        return map.Tile(x, y).TerritoryId;
+    }
+
+    public Territory? GetTerritoryInfo(int id)
+    {
+        return map.GetTerritoryInfo(id);
+    }
+    
+    private void ValidateCoordinates(int x, int y)
+    {
+        if (x < 0 || x >= 1000 || y < 0 || y >= 1000)
+            throw new ArgumentOutOfRangeException($"Coordinates ({x}, {y}) are out of map bounds");
+    }
+}
