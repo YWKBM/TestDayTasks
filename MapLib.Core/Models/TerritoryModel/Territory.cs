@@ -1,4 +1,4 @@
-namespace MapLib.Core.Models;
+namespace MapLib.Core.Models.TerritoryModel;
 
 public class Territory
 {

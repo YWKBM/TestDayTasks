@@ -1,5 +1,7 @@
 using MapLib.Core.Interfaces;
 using MapLib.Core.Models;
+using MapLib.Core.Models.MapModel;
+using MapLib.Core.Models.TerritoryModel;
 
 namespace MapLib.Services;
 

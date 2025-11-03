@@ -1,6 +1,7 @@
+using MapLib.Core.Models.TerritoryModel;
 using MapLib.Core.Services;
 
-namespace MapLib.Core.Models;
+namespace MapLib.Core.Models.MapModel;
 
 public class Map
 {
@@ -15,7 +16,7 @@ public class Map
     
     public Territory? GetTerritoryInfo(int id)
     {
-        return territories.TryGetValue(id, out var territory) ? territory : null;
+        return territories.GetValueOrDefault(id);
     }
     
     public Map()

@@ -1,4 +1,5 @@
 using MapLib.Core.Models;
+using MapLib.Core.Models.TerritoryModel;
 
 namespace MapLib.Core.Services;
 
@@ -6,61 +7,66 @@ public static class TerritoryGenService
 {
     public static void GenerateTerritories(int count, Dictionary<int, Territory> territories, Tile[,] tiles)
     {
-        // Генерация территорий. Простое разбиение на сетку
-        int cols = (int)Math.Ceiling(Math.Sqrt(count));
-        int rows = (int)Math.Ceiling((double)count / cols);
-            
-        int territoryWidth = 1000 / cols;
-        int territoryHeight = 1000 / rows;
-            
-        int territoryId = 0;
-            
-        for (int row = 0; row < rows && territoryId < count; row++)
-        {
-            for (int col = 0; col < cols && territoryId < count; col++)
-            {
-                int x = col * territoryWidth;
-                int y = row * territoryHeight;
-                int width = (col == cols - 1) ? 1000 - x : territoryWidth;
-                int height = (row == rows - 1) ? 1000 - y : territoryHeight;
-                    
-                GenerateTerritory(territoryId, x, y, width, height, territories, tiles);
-                territoryId++;
-            }
-        }
-    }
-
-    private static void GenerateTerritory(int territoryId, int x, int y, int width, int height, 
-        Dictionary<int, Territory> territories, Tile[,] tiles)
-    {
-        var territoryTiles = new List<Tile>();
         var random = new Random();
-            
-        for (int tileX = x; tileX < x + width; tileX++)
+
+        var centers = new List<(int x, int y)>();
+        for (int i = 0; i < count; i++)
         {
-            for (int tileY = y; tileY < y + height; tileY++)
+            centers.Add((random.Next(0, 1000), random.Next(0, 1000)));
+        }
+
+        for (int x = 0; x < 1000; x++)
+        {
+            for (int y = 0; y < 1000; y++)
             {
-                // случайное распределение типов тайлов
-                var tileType = random.Next(0, 100) < 70 ? TileType.Plane : TileType.Mountain;
-                    
-                tiles[tileX, tileY] = new Tile
+                int closestTerritoryId = 0;
+                double minDistance = double.MaxValue;
+
+                for (int i = 0; i < centers.Count; i++)
                 {
-                    Type = tileType,
-                    TerritoryId = territoryId,
-                    X = tileX,
-                    Y = tileY
+                    double distance = Math.Sqrt(Math.Pow(x - centers[i].x, 2) + Math.Pow(y - centers[i].y, 2));
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        closestTerritoryId = i;
+                    }
+                }
+
+                tiles[x, y] = new Tile
+                {
+                    Type = random.Next(0, 100) < 70 ? TileType.Plane : TileType.Mountain,
+                    TerritoryId = closestTerritoryId,
+                    X = x,
+                    Y = y
                 };
-                    
-                territoryTiles.Add(tiles[tileX, tileY]);
             }
         }
-            
-        var territory = new Territory(territoryId, x, y, width, height)
+
+        for (int i = 0; i < count; i++)
         {
-            Tiles = territoryTiles.ToArray()
-        };
-            
-        territories[territoryId] = territory;
+            var territoryTiles = new List<Tile>();
+            int minX = 1000, minY = 1000, maxX = 0, maxY = 0;
+
+            for (int x = 0; x < 1000; x++)
+            {
+                for (int y = 0; y < 1000; y++)
+                {
+                    if (tiles[x, y].TerritoryId == i)
+                    {
+                        territoryTiles.Add(tiles[x, y]);
+                        minX = Math.Min(minX, x);
+                        minY = Math.Min(minY, y);
+                        maxX = Math.Max(maxX, x);
+                        maxY = Math.Max(maxY, y);
+                    }
+                }
+            }
+
+            territories[i] = new Territory(i, minX, minY, maxX - minX + 1, maxY - minY + 1)
+            {
+                Tiles = territoryTiles.ToArray()
+            };
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 using MapLib.Core.Models;
+using MapLib.Core.Models.TerritoryModel;
 
 namespace MapLib.Core.Interfaces;
 
