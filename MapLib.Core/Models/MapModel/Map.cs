@@ -1,4 +1,5 @@
 using MapLib.Core.Models.TerritoryModel;
+using MapLib.Core.Models.TileModel;
 using MapLib.Core.Services;
 
 namespace MapLib.Core.Models.MapModel;

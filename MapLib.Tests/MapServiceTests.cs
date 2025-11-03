@@ -1,4 +1,5 @@
 ﻿using MapLib.Core.Models;
+using MapLib.Core.Models.TileModel;
 using MapLib.Services;
 using Xunit;
 

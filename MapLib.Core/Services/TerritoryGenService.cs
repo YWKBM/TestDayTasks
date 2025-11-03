@@ -1,5 +1,6 @@
 using MapLib.Core.Models;
 using MapLib.Core.Models.TerritoryModel;
+using MapLib.Core.Models.TileModel;
 
 namespace MapLib.Core.Services;
 
@@ -32,7 +33,7 @@ public static class TerritoryGenService
                     }
                 }
 
-                tiles[x, y] = new Tile
+                tiles[x, y] = new Tile()
                 {
                     Type = random.Next(0, 100) < 70 ? TileType.Plane : TileType.Mountain,
                     TerritoryId = closestTerritoryId,

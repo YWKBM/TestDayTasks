@@ -1,5 +1,6 @@
 using MapLib.Core.Models;
 using MapLib.Core.Models.TerritoryModel;
+using MapLib.Core.Models.TileModel;
 
 namespace MapLib.Core.Interfaces;
 

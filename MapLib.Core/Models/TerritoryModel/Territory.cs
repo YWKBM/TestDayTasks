@@ -1,3 +1,5 @@
+using MapLib.Core.Models.TileModel;
+
 namespace MapLib.Core.Models.TerritoryModel;
 
 public class Territory
