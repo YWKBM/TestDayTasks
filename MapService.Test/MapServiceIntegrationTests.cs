@@ -13,7 +13,7 @@ public class MapHubIntegrationTests : IClassFixture<WebApplicationFactory<Progra
     private readonly WebApplicationFactory<Program> _factory;
     private readonly HttpClient _httpClient;
     private GrpcChannel? _channel;
-    private IMapHub _client;
+    private IMapHub?_client;
 
     public MapHubIntegrationTests(WebApplicationFactory<Program> factory)
     {
@@ -34,7 +34,7 @@ public class MapHubIntegrationTests : IClassFixture<WebApplicationFactory<Progra
         _channel = GrpcChannel.ForAddress(_httpClient.BaseAddress!, new GrpcChannelOptions
         {
             HttpClient = _httpClient,
-            DisposeHttpClient = false // Don't dispose the factory's HttpClient
+            DisposeHttpClient = false 
         });
 
         _client = await StreamingHubClient.ConnectAsync<IMapHub, IMapHubReceiver>(

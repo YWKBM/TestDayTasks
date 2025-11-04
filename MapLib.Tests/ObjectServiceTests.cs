@@ -20,7 +20,6 @@ public class ObjectServiceTests : IAsyncLifetime
             _service = new ObjectService(repository);
             
             var db = _redis.GetDatabase();
-            var server = _redis.GetServer(_redis.GetEndPoints()[0]);
             await db.ExecuteAsync("FLUSHDB");
         }
         catch (RedisConnectionException)
