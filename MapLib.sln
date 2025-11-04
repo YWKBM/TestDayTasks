@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapLib.Object", "MapLib.Obj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapService", "MapService\MapService.csproj", "{CF9ADA5D-1827-4E76-968B-64459E2E7162}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapService.Test", "MapService.Test\MapService.Test.csproj", "{AB34BAC9-1E6F-476B-973A-9EE98EAA6070}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapService.Tests", "MapService.Tests\MapService.Tests.csproj", "{AB34BAC9-1E6F-476B-973A-9EE98EAA6070}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

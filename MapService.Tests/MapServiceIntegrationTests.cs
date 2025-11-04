@@ -6,7 +6,7 @@ using MapService.Interfaces;
 using MapService.DTO.Requests;
 using MapService.DTO.Responses;
 
-namespace MapService.Tests.IntegrationTests;
+namespace MapService.Tests;
 
 public class MapHubIntegrationTests : IClassFixture<WebApplicationFactory<Program>>, IAsyncDisposable
 {
