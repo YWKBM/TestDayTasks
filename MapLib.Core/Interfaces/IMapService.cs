@@ -13,4 +13,6 @@ public interface IMapService
     int GetTerritoryId(int x, int y);
 
     Territory? GetTerritoryInfo(int id);
+    
+    List<Territory> GetTerritoriesInArea(int x1, int x2, int y1, int y2);
 }

@@ -32,7 +32,15 @@ public class MapService(MapProvider mapProvider) : IMapService
     {
         return map.GetTerritoryInfo(id);
     }
-    
+
+    public List<Territory> GetTerritoriesInArea(int x1, int x2, int y1, int y2)
+    {
+        ValidateCoordinates(x1, y1);
+        ValidateCoordinates(x2, y2);
+
+        return map.GetTerritoriesInArea(x1, x2, y1, y2);
+    }
+
     private void ValidateCoordinates(int x, int y)
     {
         if (x < 0 || x >= 1000 || y < 0 || y >= 1000)

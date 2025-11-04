@@ -33,7 +33,15 @@ public class ObjectService(
         ValidateCoordinates(x, y);
         return await db.GetObjectInZone(x, y, rad);
     }
-    
+
+    public async Task<List<ObjectInfo>> GetObjectsInArea(int x1, int x2, int y1, int y2)
+    {
+        ValidateCoordinates(x1, y1);
+        ValidateCoordinates(x2, y2);
+
+        return await db.GetObjectsInAreaAsync(x1, x2, y1, y2);
+    }
+
     private void ValidateCoordinates(int x, int y)
     {
         if (x < 0 || x >= 1000 || y < 0 || y >= 1000)

@@ -23,6 +23,7 @@ public static class MapLibExtensions
 
         services.AddScoped<IMapService, MapService>();
         services.AddScoped<IObjectService, ObjectService>();
+        services.AddScoped<IGameService, GameService>();
 
         return services;
     }

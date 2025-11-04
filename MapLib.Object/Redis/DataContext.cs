@@ -93,7 +93,43 @@ public class DataContext
 
         return objects;
     }
+
+    public async Task<List<ObjectInfo>> GetObjectsInAreaAsync(int x1, int y1, int x2, int y2)
+    {
+        var centerX = (x1 + x2) / 2.0;
+        var centerY = (y1 + y2) / 2.0;
+        var width = Math.Abs(x2 - x1);
+        var height = Math.Abs(y2 - y1);
+        var radius = Math.Max(width, height) / 2.0;
+        
+        var results = await db.GeoRadiusAsync(
+            GeoIndexKey,
+            NormalizeToLongitude((int)centerX),
+            NormalizeToLatitude((int)centerY),
+            radius / 111.0,
+            GeoUnit.Kilometers);
+        
+        var objects = new List<ObjectInfo>();
+        foreach (var result in results)
+        {
+            var obj = await GetByIdAsync(result.Member!);
+            if (obj != null && IsInBounds(obj, x1, y1, x2, y2))
+                objects.Add(obj);
+        }
+        
+        return objects;
+    }
     
+    private bool IsInBounds(ObjectInfo obj, int x1, int y1, int x2, int y2)
+    {
+        int minX = Math.Min(x1, x2);
+        int maxX = Math.Max(x1, x2);
+        int minY = Math.Min(y1, y2);
+        int maxY = Math.Max(y1, y2);
+        
+        return obj.X >= minX && obj.X <= maxX && obj.Y >= minY && obj.Y <= maxY;
+    }
+
     public async Task<ObjectInfo?> GetByIdAsync(string objectId)
     {
         var key = GetObjectKey(objectId);
