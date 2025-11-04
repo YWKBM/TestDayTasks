@@ -6,7 +6,7 @@ namespace MapService.DTO.Responses;
 [MemoryPackable]
 public partial class GetTerritoriesInAreaResponse
 {
-    public List<Territory> Territories { get; set; }
+    public List<TerritoryItem> Items { get; set; }
     
     [MemoryPackable]
     public partial record TerritoryItem
@@ -28,7 +28,3 @@ public partial class GetTerritoriesInAreaResponse
         }
     }
 }
-
-// public int Id { get; set; }
-//     
-// public BordersInfo BordersInfo { get; set; }
