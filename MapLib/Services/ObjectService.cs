@@ -1,23 +1,33 @@
 using System.Runtime.InteropServices.JavaScript;
 using MapLib.Core.Interfaces;
 using MapLib.Core.Models.ObjectModel;
+using MapLib.Object.Redis;
 
 namespace MapLib.Services;
 
-public class ObjectService : IObjectService
+public class ObjectService(
+    DataContext db
+    ) : IObjectService
 {
-    public bool CreateObject(int x, int y, ObjectType type)
+    public async Task<bool> CreateObject(int x, int y, ObjectType type)
     {
-        throw new NotImplementedException();
+        var objectInfo = new ObjectInfo()
+        {
+            X = x,
+            Y = y,
+            Type = type,
+        };
+
+        return await db.CreateAsync(objectInfo);
     }
 
-    public bool DeleteObject(int x, int y)
+    public async Task<bool> DeleteObject(string objectId)
     {
-        throw new NotImplementedException();
+        return await db.Delete(objectId);
     }
 
-    public List<JSType.Object> GetObjects(int x, int y, int rad)
+    public async Task<List<ObjectInfo>> GetObjects(int x, int y, int rad)
     {
-        throw new NotImplementedException();
+        return await db.GetObjectInZone(x, y, rad);
     }
 }

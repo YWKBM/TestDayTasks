@@ -7,10 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MapLib.Core\MapLib.Core.csproj" />
-        <ProjectReference Include="..\MapLib.Object\MapLib.Object.csproj" />
+      <ProjectReference Include="..\MapLib.Core\MapLib.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="StackExchange.Redis" Version="2.9.32" />
+    </ItemGroup>
 
 </Project>

@@ -6,10 +6,10 @@ using MapLib.Core.Models.TileModel;
 
 namespace MapLib.Services;
 
-public class MapService : IMapService
+public class MapService(MapProvider mapProvider) : IMapService
 {
-    private Map map = new();
-
+    private Map map = mapProvider.Instance;
+    
     public Tile GetTile(int x, int y)
     {
         ValidateCoordinates(x, y);

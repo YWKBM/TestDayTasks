@@ -11,7 +11,8 @@ public class MapServiceTests
 
     public MapServiceTests()
     {
-        mapService = new MapService();
+        MapProvider mapProvider = new MapProvider();
+        mapService = new MapService(mapProvider);
     }
     
     [Fact]

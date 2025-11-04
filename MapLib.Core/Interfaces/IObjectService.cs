@@ -5,9 +5,9 @@ namespace MapLib.Core.Interfaces;
 
 public interface IObjectService
 {
-    bool CreateObject(int x, int y, ObjectType type);
+    Task<bool> CreateObject(int x, int y, ObjectType type);
 
-    bool DeleteObject(int x, int y);
+    Task<bool> DeleteObject(string objectId);
 
-    List<JSType.Object> GetObjects(int x, int y, int rad);
+    Task<List<ObjectInfo>> GetObjects(int x, int y, int rad);
 }

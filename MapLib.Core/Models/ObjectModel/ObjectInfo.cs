@@ -1,8 +1,8 @@
 namespace MapLib.Core.Models.ObjectModel;
 
-public class Object
+public class ObjectInfo
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     
     public int X { get; set; }
     
