@@ -10,4 +10,9 @@
       <ProjectReference Include="..\MapLib\MapLib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MagicOnion" Version="7.0.6" />
+      <PackageReference Include="MemoryPack" Version="1.21.4" />
+    </ItemGroup>
+
 </Project>
