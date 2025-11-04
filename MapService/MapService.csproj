@@ -11,10 +11,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MagicOnion" Version="7.0.6" />
-      <PackageReference Include="MagicOnion.Abstractions" Version="7.0.6" />
-      <PackageReference Include="MagicOnion.Serialization.MessagePack" Version="7.0.6" />
+      <PackageReference Include="MagicOnion" Version="7.0.0" />
+      <PackageReference Include="MagicOnion.Abstractions" Version="7.0.0" />
+      <PackageReference Include="MagicOnion.Serialization.MessagePack" Version="7.0.0" />
+      <PackageReference Include="MagicOnion.Server" Version="7.0.0" />
+      <PackageReference Include="MagicOnion.Shared" Version="7.0.0" />
       <PackageReference Include="MemoryPack" Version="1.21.4" />
+      <PackageReference Include="MemoryPack.Core" Version="1.21.4" />
+      <PackageReference Include="MemoryPack.Generator" Version="1.21.4">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>

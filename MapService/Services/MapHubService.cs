@@ -1,3 +1,7 @@
+using System.Threading.Tasks.Dataflow;
+using Cysharp.Runtime.Multicast;
+using MagicOnion.Server;
+using MagicOnion.Client;
 using MagicOnion.Server.Hubs;
 using MapLib.Core.Interfaces;
 using MapLib.Core.Models.ObjectModel;
@@ -7,20 +11,58 @@ using MapService.Interfaces;
 
 namespace MapService.Services;
 
-public class MapHubService
-    (
-        IGameService gameService
-        ) : StreamingHubBase<IMapHub, IMapHubReceiver>, IMapHub
+public class MapHubService : StreamingHubBase<IMapHub, IMapHubReceiver>, IMapHub
 {
+    private readonly IGameService gameService;
+    
+    private string? subscriptionId;
+    private IGroup<IMapHubReceiver>? subscriberGroup;
+    private SubscribeRequest? clientSubscription;
+
+    
+    public MapHubService(IGameService gameService)
+    {
+        this.gameService = gameService;
+    }
+
+    public async Task<SubscribeResponse> SubscribeAsync(SubscribeRequest request)
+    {
+        try
+        {
+            subscriptionId = Guid.NewGuid().ToString();
+            subscriberGroup = await Group.AddAsync(subscriptionId);
+            
+            clientSubscription = request;
+            
+            return new SubscribeResponse()
+            {
+                Success = true,
+                SubscriptionId = subscriptionId,
+                ErrorMessage = string.Empty
+            };
+        }
+        catch (Exception ex)
+        {
+            return new SubscribeResponse
+            {
+                Success = false,
+                ErrorMessage = ex.Message
+            };
+        }
+    }
+
     public async Task<PlaceObjectResponse> PlaceObjectAsync(PlaceObjectRequest request)
     {
         var result = await gameService.PlaceObject(request.X, request.Y, (ObjectType)request.ObjectType);
 
-        return new PlaceObjectResponse()
+        var response = new PlaceObjectResponse()
         {
             ObjectId = result.Item1,
             ObjectType = (int)result.Item2,
         };
+
+        Client.OnObjectPlaced(response);
+        return response;
     }
 
     public async Task<GetObjectsInAreaResponse> GetObjectsInAreaAsync(GetObjectsInAreaRequests request)
@@ -67,10 +109,26 @@ public class MapHubService
     public async Task<DeleteObjectResponse> DeleteObjectAsync(DeleteObjectRequest request)
     {
         var objectId = await gameService.DeleteObject(request.ObjectId);
-
-        return new DeleteObjectResponse()
+        
+        var response =  new DeleteObjectResponse()
         {
             ObjectId = objectId
         };
+
+        Client.OnObjectDeleted(response);
+        
+        return response;
+
+    }
+
+    public async Task UnsubscribeAsync()
+    {
+        if (subscriberGroup != null)
+        {
+            await subscriberGroup.RemoveAsync(Context);
+            subscriberGroup = null;
+            subscriptionId = string.Empty;
+            clientSubscription = null;
+        }
     }
 }

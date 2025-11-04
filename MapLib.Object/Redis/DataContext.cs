@@ -94,7 +94,7 @@ public class DataContext
         return objects;
     }
 
-    public async Task<List<ObjectInfo>> GetObjectsInAreaAsync(int x1, int y1, int x2, int y2)
+    public async Task<List<ObjectInfo>> GetObjectsInAreaAsync(int x1, int x2, int y1, int y2)
     {
         var centerX = (x1 + x2) / 2.0;
         var centerY = (y1 + y2) / 2.0;
@@ -106,7 +106,7 @@ public class DataContext
             GeoIndexKey,
             NormalizeToLongitude((int)centerX),
             NormalizeToLatitude((int)centerY),
-            radius / 111.0,
+            radius / 100.0,
             GeoUnit.Kilometers);
         
         var objects = new List<ObjectInfo>();

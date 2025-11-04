@@ -1,9 +1,11 @@
 using MemoryPack;
+using MessagePack;
 
 namespace MapService.DTO.Requests;
 
-[MemoryPackable]
+[MessagePackObject]
 public partial record DeleteObjectRequest
 {
+    [Key(1)]
     public string ObjectId { get; set; }
 }

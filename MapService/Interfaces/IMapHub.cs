@@ -6,6 +6,8 @@ namespace MapService.Interfaces;
 
 public interface IMapHub : IStreamingHub<IMapHub, IMapHubReceiver>
 {
+    Task<SubscribeResponse> SubscribeAsync(SubscribeRequest request);
+    
     Task<PlaceObjectResponse> PlaceObjectAsync(PlaceObjectRequest request);
     
     Task<GetObjectsInAreaResponse> GetObjectsInAreaAsync(GetObjectsInAreaRequests request);
@@ -13,9 +15,12 @@ public interface IMapHub : IStreamingHub<IMapHub, IMapHubReceiver>
     Task<GetTerritoriesInAreaResponse> GetTerritoriesInAreaAsync(GetTerritoriesInAreaRequest request);
     
     Task<DeleteObjectResponse> DeleteObjectAsync(DeleteObjectRequest request);
+    
+    Task UnsubscribeAsync();
 }
 
 public interface IMapHubReceiver
 {
-    void OnMapEvent();
+    void OnObjectPlaced(PlaceObjectResponse response);
+    void OnObjectDeleted(DeleteObjectResponse response);
 }
