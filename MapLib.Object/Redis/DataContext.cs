@@ -12,13 +12,15 @@ public class DataContext
     private const string ObjectsKeyPrefix = "objects:";
     private const string GeoIndexKey = "geo:objects";
     
+    private const int CoordinateScale = 10000;
+    
     public DataContext(IConnectionMultiplexer redis)
     {
         this.redis = redis;
         db = redis.GetDatabase();
     }
 
-    public async Task<bool> CreateAsync(ObjectInfo objectInfo)
+    public async Task<string> CreateAsync(ObjectInfo objectInfo)
     {
         if (string.IsNullOrEmpty(objectInfo.Id))
         {
@@ -30,7 +32,7 @@ public class DataContext
         
         var trans = db.CreateTransaction();
 
-        var set = trans.SetAddAsync(key, json);
+        var set = trans.StringSetAsync(key, json);
 
         var geo = trans.GeoAddAsync(
             GeoIndexKey,
@@ -41,12 +43,15 @@ public class DataContext
 
         await trans.ExecuteAsync();
 
-        return true;
+        return objectInfo.Id;
     }
     
     public async Task<bool> Delete(string objectId)
     {
         var key = GetObjectKey(objectId);
+        
+        var exists = await db.KeyExistsAsync(key);
+        if (!exists) return false;
         
         var json = await db.StringGetAsync(key);
         if (string.IsNullOrEmpty(json)) return false;
@@ -69,11 +74,13 @@ public class DataContext
 
     public async Task<List<ObjectInfo>> GetObjectInZone(int x, int y, int rad)
     {
+        var searchRad = rad / 100.0; 
+        
         var results = await db.GeoRadiusAsync(
             GeoIndexKey,
             NormalizeToLongitude(x),
             NormalizeToLatitude(y),
-            rad / 111.0,
+            searchRad,
             GeoUnit.Kilometers);
         
         var objects = new List<ObjectInfo>();
@@ -100,6 +107,6 @@ public class DataContext
 
     private string GetObjectKey(string objectId) => $"{ObjectsKeyPrefix}{objectId}";
     
-    private double NormalizeToLongitude(int x) => (x / 1000.0) * 360.0 - 180.0;
-    private double NormalizeToLatitude(int y) => (y / 1000.0) * 180.0 - 90.0;
+    private double NormalizeToLongitude(int x) => (x - 500) / (double)CoordinateScale;
+    private double NormalizeToLatitude(int y) => (y - 500) / (double)CoordinateScale;
 }

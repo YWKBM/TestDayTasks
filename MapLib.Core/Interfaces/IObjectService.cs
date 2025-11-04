@@ -5,7 +5,7 @@ namespace MapLib.Core.Interfaces;
 
 public interface IObjectService
 {
-    Task<bool> CreateObject(int x, int y, ObjectType type);
+    Task<string> CreateObject(int x, int y, ObjectType type);
 
     Task<bool> DeleteObject(string objectId);
 

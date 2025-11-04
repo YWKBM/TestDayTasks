@@ -9,8 +9,10 @@ public class ObjectService(
     DataContext db
     ) : IObjectService
 {
-    public async Task<bool> CreateObject(int x, int y, ObjectType type)
+    public async Task<string> CreateObject(int x, int y, ObjectType type)
     {
+        ValidateCoordinates(x, y);
+
         var objectInfo = new ObjectInfo()
         {
             X = x,
@@ -28,6 +30,13 @@ public class ObjectService(
 
     public async Task<List<ObjectInfo>> GetObjects(int x, int y, int rad)
     {
+        ValidateCoordinates(x, y);
         return await db.GetObjectInZone(x, y, rad);
+    }
+    
+    private void ValidateCoordinates(int x, int y)
+    {
+        if (x < 0 || x >= 1000 || y < 0 || y >= 1000)
+            throw new ArgumentOutOfRangeException($"Coordinates ({x}, {y}) are out of map bounds");
     }
 }
